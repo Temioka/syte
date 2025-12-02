@@ -141,61 +141,84 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         async handleExcelUpload(event) {
-            const file = event.target.files[0];
+            const file = event. target.files[0];
             if (!file) return;
+            
             this.showToast('Обработка файла...', 'info');
-
+            
             try {
-                const data = await file.arrayBuffer();
-                const workbook = XLSX.read(data);
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-                if (jsonData.length === 0) {
-                    this.showToast('Файл пустой', 'error');
-                    return;
-                }
-
-                const response = await fetch('/api/prejudicial/import', {
+                const tableName = this.state.moduleTable; // 'sudeb_vzisk', 'dos_rabota', 'base_zayci'
+                
+                // Создаем FormData для отправки файла
+                const formData = new FormData();
+                formData. append('file', file);
+                
+                const response = await fetch(`${API_BASE_URL}/files/upload/${tableName}`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${this.state.token}`
                     },
-                    body: JSON.stringify({ data: jsonData })
+                    body: formData
                 });
-
-                if (!response.ok) throw new Error('Ошибка импорта');
-
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Ошибка загрузки');
+                }
+                
                 const result = await response.json();
-                this.showToast(`Загружено: ${result.imported} записей`, 'success');
+                
+                // Показываем детальную статистику
+                const stats = result.statistics;
+                const message = `✅ Добавлено: ${stats.inserted} | Обновлено: ${stats.updated} | Ошибок: ${stats.failed}`;
+                
+                this.showToast(message, stats.failed > 0 ? 'warning' : 'success');
+                
+                // Если есть ошибки, выводим в консоль
+                if (stats.errors && stats.errors.length > 0) {
+                    console.warn('⚠️ Ошибки при импорте:', stats.errors);
+                }
+                
+                // Перезагружаем данные
                 await this.loadData();
+                
             } catch (error) {
-                console.error('Ошибка загрузки:', error);
-                this.showToast('Ошибка при загрузке файла', 'error');
+                console.error('❌ Ошибка загрузки:', error);
+                this.showToast(error.message || 'Ошибка загрузки файла', 'error');
             } finally {
-                event.target.value = '';
+                event.target. value = ''; // Сбрасываем input
             }
         }
 
-        downloadTemplate() {
-            const templateData = [{
-                'Тип клиента': '',
-                'ФИО/Наименование': '',
-                '№ л/с': '',
-                'Сумма подаваемой ДЗ , руб.': '',
-                'ИНН': '',
-                'Адрес должника': '',
-                'Дата направления претензии': '',
-                'ШПИ отправления': '',
-            }];
-
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet(templateData);
-            XLSX.utils.book_append_sheet(wb, ws, 'Шаблон');
-            XLSX.writeFile(wb, `Шаблон_Досудебная_${new Date().toISOString().split('T')[0]}.xlsx`);
-            this.showToast('Шаблон скачан', 'success');
+        async downloadTemplate() {
+            try {
+                const tableName = this. state.moduleTable;
+                
+                const response = await fetch(`${API_BASE_URL}/files/template/${tableName}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${this.state.token}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Ошибка загрузки шаблона');
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Шаблон_${tableName}_${new Date().toISOString().split('T')[0]}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                this.showToast('Шаблон скачан', 'success');
+                
+            } catch (error) {
+                console.error('Ошибка скачивания шаблона:', error);
+                this.showToast('Ошибка скачивания шаблона', 'error');
+            }
         }
 
         calculateTotals() {

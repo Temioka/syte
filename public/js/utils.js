@@ -36,7 +36,7 @@ const Utils = {
     getUser() {
         try {
             const userStr = localStorage.getItem('user');
-            return userStr ? JSON.parse(userStr) : null;
+            return userStr ? JSON. parse(userStr) : null;
         } catch (error) {
             console.error('❌ Ошибка парсинга данных пользователя:', error);
             return null;
@@ -69,7 +69,7 @@ const Utils = {
         if (text === null || text === undefined) return '';
         const div = document.createElement('div');
         div.textContent = String(text);
-        return div.innerHTML;
+        return div. innerHTML;
     },
 
     /**
@@ -112,8 +112,8 @@ const Utils = {
         const date = new Date(dateString);
         if (isNaN(date.getTime())) return '';
         const y = date.getFullYear();
-        const m = String(date.getMonth() + 1).padStart(2, '0');
-        const d = String(date.getDate()).padStart(2, '0');
+        const m = String(date. getMonth() + 1).padStart(2, '0');
+        const d = String(date. getDate()).padStart(2, '0');
         return `${y}-${m}-${d}`;
     },
 
@@ -163,9 +163,33 @@ const Utils = {
      */
     parseNumber(str) {
         if (!str) return null;
-        const cleaned = String(str).replace(/\s/g, '').replace(',', '.');
+        const cleaned = String(str).replace(/\s/g, ''). replace(',', '.');
         const num = parseFloat(cleaned);
         return isNaN(num) ? null : num;
+    },
+
+    /**
+     * Форматирование паспорта в формат XX-XX-XXXXXX
+     * @param {string} value - Значение паспорта
+     * @returns {string} Отформатированный паспорт
+     */
+    formatPassport(value) {
+        if (!value) return '';
+        
+        // Удаляем все символы кроме цифр
+        const numbers = String(value).replace(/\D/g, '');
+        
+        // Ограничиваем 10 цифрами
+        const limited = numbers.substring(0, 10);
+        
+        // Форматируем: XX-XX-XXXXXX
+        if (limited.length <= 2) {
+            return limited;
+        } else if (limited.length <= 4) {
+            return `${limited.substring(0, 2)}-${limited.substring(2)}`;
+        } else {
+            return `${limited.substring(0, 2)}-${limited.substring(2, 4)}-${limited.substring(4)}`;
+        }
     },
 
     /**
@@ -174,9 +198,9 @@ const Utils = {
      * @returns {string} Инициалы
      */
     getInitials(name) {
-        if (!name) return '?';
+        if (!name) return '? ';
         const parts = name.trim().split(' ');
-        if (parts.length >= 2) {
+        if (parts. length >= 2) {
             return (parts[0][0] + parts[1][0]).toUpperCase();
         }
         return name[0].toUpperCase();
@@ -210,7 +234,7 @@ const Utils = {
         let inThrottle;
         return function(...args) {
             if (!inThrottle) {
-                func.apply(this, args);
+                func. apply(this, args);
                 inThrottle = true;
                 setTimeout(() => inThrottle = false, limit);
             }
@@ -252,7 +276,7 @@ const Utils = {
                 }
                 
             } catch (error) {
-                console.warn(`⚠️ Попытка ${i + 1}/${retries} не удалась:`, error.message);
+                console.warn(`⚠️ Попытка ${i + 1}/${retries} не удалась:`, error. message);
                 
                 // На последней попытке выбрасываем ошибку
                 if (i === retries - 1) {
@@ -260,7 +284,7 @@ const Utils = {
                 }
                 
                 // Экспоненциальная задержка между попытками
-                await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
+                await new Promise(resolve => setTimeout(resolve, 1000 * Math. pow(2, i)));
             }
         }
     },
@@ -282,7 +306,7 @@ const Utils = {
             textarea.value = text;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
+            document. body.appendChild(textarea);
             textarea.select();
             
             try {
@@ -303,7 +327,7 @@ const Utils = {
      */
     isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        return emailRegex. test(email);
     },
 
     /**
@@ -358,13 +382,13 @@ const Utils = {
 
 // Экспорт для использования в других модулях
 if (typeof window !== 'undefined') {
-    window.Utils = Utils;
+    window. Utils = Utils;
     
     // Для обратной совместимости
     window.checkAuth = Utils.checkAuth;
     window.logout = Utils.logout;
     window.getToken = Utils.getToken;
-    window.getUser = Utils.getUser;
+    window. getUser = Utils.getUser;
 }
 
 if (typeof module !== 'undefined' && module.exports) {

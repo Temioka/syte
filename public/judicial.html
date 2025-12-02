@@ -328,7 +328,7 @@
                     <div class="form-group"><label>Повторная подача (тип)</label><input type="text" id="resubmissionType"></div>
                     <div class="form-group"><label for="resubmissionDate">Дата повторной подачи</label><input type="date" id="resubmissionDate"></div>
                     <div class="form-group"><label for="resubmissionFee">Сумма госпошлины (повторная подача)</label><div class="input-with-currency"><input type="text" id="resubmissionFee"></div></div>
-                    <div class="form-group"><label for="passport">Паспорт</label><input type="text" id="passport"></div>
+                    <div class="form-group"><label for="passport">Паспорт</label><input type="text" id="passport" maxlength="12"></div>
                     <div class="form-group"><label for="birthDate">Дата рождения (регистрации) должника</label><input type="date" id="birthDate"></div>
                     <div class="form-group"><label for="birthPlace">Место рождения (регистрации) должника</label><input type="text" id="birthPlace"></div>
                     <div class="form-group"><label for="debtorAddress">Адрес должника</label><textarea id="debtorAddress" rows="3"></textarea></div>
@@ -439,9 +439,10 @@
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd. min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5. 23/jspdf.plugin. autotable.min.js"></script>
     <script src="/js/config.js"></script>
+    <script src="/js/utils.js"></script>
     <script src="/js/theme.js"></script>
     <script src="/js/transition.js"></script>
     <script src="/js/toast.js"></script>

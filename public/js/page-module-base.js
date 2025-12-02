@@ -27,7 +27,7 @@ class PageModuleBase {
     // ==================== ИНИЦИАЛИЗАЦИЯ ====================
 
     init() {
-        if (!this.state.token) {
+        if (! this.state.token) {
             console.warn("⚠️ Токен отсутствует.");
             if (typeof navigateWithTransition === 'function') {
                 navigateWithTransition('/');
@@ -51,6 +51,7 @@ class PageModuleBase {
 
         this.cacheDom();
         this.bindEvents();
+        this.initPassportFormatting();
         this.loadUserProfile();
         this.loadData();
     }
@@ -196,6 +197,28 @@ class PageModuleBase {
                 el.addEventListener('input', () => this.calculateTotals());
             }
         });
+    }
+
+    initPassportFormatting() {
+        const passportInput = document.getElementById('passport');
+        if (passportInput) {
+            passportInput.setAttribute('maxlength', '12'); // XX-XX-XXXXXX = 12 символов
+            
+            passportInput.addEventListener('input', (e) => {
+                const cursorPosition = e.target.selectionStart;
+                const oldValue = e.target.value;
+                const newValue = Utils.formatPassport(oldValue);
+                
+                e.target.value = newValue;
+                
+                // Корректируем позицию курсора при добавлении дефисов
+                let newCursorPosition = cursorPosition;
+                if (newValue.length > oldValue.length) {
+                    newCursorPosition = cursorPosition + (newValue.length - oldValue. length);
+                }
+                e.target.setSelectionRange(newCursorPosition, newCursorPosition);
+            });
+        }
     }
 
     // ==================== ЗАГРУЗКА ДАННЫХ ====================
@@ -482,16 +505,19 @@ class PageModuleBase {
         for (const id in this.config.fieldMap) {
             const dbColumnName = this.config.fieldMap[id];
             const el = document.getElementById(id);
-            if (!el) continue;
+            if (! el) continue;
 
-            const value = item[dbColumnName] ?? '';
+            const value = item[dbColumnName] ??  '';
             
             if (el.type === 'date') {
                 el.value = this.dateUtils.toInput(value);
             } else if (el.closest('.input-with-currency')) {
                 el.value = this.formatters.number(value);
+            } else if (id === 'passport') {
+                // ✅ Форматируем паспорт при загрузке данных
+                el.value = Utils.formatPassport(value);
             } else {
-                el.value = value;
+                el. value = value;
             }
         }
     }

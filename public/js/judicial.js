@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Поля для фильтрации по дате (выбираем главное поле даты для фильтра)
                 dateFilterField: 'Дата направления в суд', 
 
-                // ... (ваш остальной конфиг без изменений) ...
                 fieldsForCalculation: [
                     'debtAmount', 'stateFee', 'penaltyAmount', 'postageAmount', 'totalReceived', 
                     'confirmedDebt', 'confirmedFee', 'confirmedPenalty', 'confirmedPostage'
@@ -93,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.initDateFilters(); // Инициализация фильтров
         }
 
-        // ✅ НОВЫЙ МЕТОД: Инициализация обработчиков дат
+        //Инициализация обработчиков дат
         initDateFilters() {
             const dateFrom = document.getElementById('filterDateFrom');
             const dateTo = document.getElementById('filterDateTo');
@@ -113,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // ✅ ПЕРЕОПРЕДЕЛЯЕМ МЕТОД ФИЛЬТРАЦИИ (Добавляем даты)
+        //Добавляем даты
         filterData() {
             this.state.currentPage = 1;
             
@@ -175,37 +174,84 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         async handleExcelUpload(event) {
-            const file = event.target.files[0];
+            const file = event. target.files[0];
             if (!file) return;
+            
             this.showToast('Обработка файла...', 'info');
+            
             try {
-                const data = await file.arrayBuffer();
-                const workbook = XLSX.read(data);
-                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                if (jsonData.length === 0) { this.showToast('Файл пустой', 'error'); return; }
-                const response = await fetch('/api/judicial/import', {
+                const tableName = this.state.moduleTable; // 'sudeb_vzisk', 'dos_rabota', 'base_zayci'
+                
+                // Создаем FormData для отправки файла
+                const formData = new FormData();
+                formData. append('file', file);
+                
+                const response = await fetch(`${API_BASE_URL}/files/upload/${tableName}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-                    body: JSON.stringify({ data: jsonData })
+                    headers: {
+                        'Authorization': `Bearer ${this.state.token}`
+                    },
+                    body: formData
                 });
-                if (!response.ok) throw new Error('Ошибка импорта');
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Ошибка загрузки');
+                }
+                
                 const result = await response.json();
-                this.showToast(`Загружено: ${result.imported} записей`, 'success');
+                
+                // Показываем детальную статистику
+                const stats = result.statistics;
+                const message = `✅ Добавлено: ${stats.inserted} | Обновлено: ${stats.updated} | Ошибок: ${stats.failed}`;
+                
+                this.showToast(message, stats.failed > 0 ? 'warning' : 'success');
+                
+                // Если есть ошибки, выводим в консоль
+                if (stats.errors && stats.errors.length > 0) {
+                    console.warn('⚠️ Ошибки при импорте:', stats.errors);
+                }
+                
+                // Перезагружаем данные
                 await this.loadData();
+                
             } catch (error) {
-                console.error('Ошибка:', error);
-                this.showToast('Ошибка загрузки файла', 'error');
-            } finally { event.target.value = ''; }
+                console.error('❌ Ошибка загрузки:', error);
+                this.showToast(error.message || 'Ошибка загрузки файла', 'error');
+            } finally {
+                event.target. value = ''; // Сбрасываем input
+            }
         }
 
-        downloadTemplate() {
-            // ... (ваш код шаблона) ...
-            const templateData = [{ 'ФИО/Наименование': '', '№ л/с': '', 'Дата направления в суд': '2024-01-01' }];
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet(templateData);
-            XLSX.utils.book_append_sheet(wb, ws, 'Шаблон');
-            XLSX.writeFile(wb, `Шаблон_Судебная_работа.xlsx`);
+        async downloadTemplate() {
+            try {
+                const tableName = this. state.moduleTable;
+                
+                const response = await fetch(`${API_BASE_URL}/files/template/${tableName}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${this.state.token}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Ошибка загрузки шаблона');
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Шаблон_${tableName}_${new Date().toISOString().split('T')[0]}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                this.showToast('Шаблон скачан', 'success');
+                
+            } catch (error) {
+                console.error('Ошибка скачивания шаблона:', error);
+                this.showToast('Ошибка скачивания шаблона', 'error');
+            }
         }
 
         calculateTotals() {

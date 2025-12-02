@@ -96,6 +96,7 @@ app.use('/api/data', require('./routes/data'));
 app.use('/api/stats', require('./routes/stats'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/reports', require('./routes/reports'));
+app.use('/api/files', require('./routes/files'));
 
 console.log('\n🔧 Загрузка новых роутов истории...\n');
 
