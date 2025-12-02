@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
+    <title>База зайцев - УВДЗ</title>
+    <link rel="stylesheet" href="/css/toast.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/judicial.css">
+</head>
+<body>
+    <div class="judicial-container">
+        <!-- Animated background -->
+        <div class="background-animation">
+            <div class="bg-element element-1"></div>
+            <div class="bg-element element-2"></div>
+            <div class="bg-element element-3"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="judicial-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <a href="/dashboard.html" class="back-button" title="Назад к дашборду" data-transition>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </a>
+                    <h1>База зайцев</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <span id="userName">Пользователь</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <button class="btn btn-secondary" id="showHistoryBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 4v6h6"></path>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        <span>История изменений</span>
+                    </button>
+                    <button class="theme-toggle" id="themeToggle" title="Переключить тему">
+                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="judicial-main">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <h2>База зайцев</h2>
+                    <p class="page-subtitle">Учет должников без договоров по платным дорогам</p>
+                </div>
+                <div class="toolbar-right">
+                    <!-- Загрузка Excel -->
+                    <button class="btn btn-primary" id="uploadExcelBtn" title="Загрузить данные из Excel">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                        </svg>
+                        <span>Загрузить Excel</span>
+                    </button>
+                    <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display: none;">
+                    
+                    <!-- Скачать шаблон -->
+                    <button class="btn btn-secondary" id="downloadTemplateBtn" title="Скачать шаблон Excel">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="12" y1="18" x2="12" y2="12"/>
+                            <line x1="9" y1="15" x2="15" y2="15"/>
+                        </svg>
+                        <span>Шаблон</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Controls -->
+            <div class="table-controls">
+                <h2>База данных должников</h2>
+
+                <!-- ✅ НОВЫЙ БЛОК ФИЛЬТРОВ -->
+                <div class="filters-wrapper">
+                    <div class="date-filter-group">
+                        <!-- Дата С -->
+                        <div class="input-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <input type="text" id="filterDateFrom" placeholder="Дата с..." onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                        
+                        <span class="filter-separator">—</span>
+                        
+                        <!-- Дата ПО -->
+                        <div class="input-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <input type="text" id="filterDateTo" placeholder="Дата по..." onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+
+                        <!-- Кнопка сброса -->
+                        <button class="btn-icon-only" id="resetFiltersBtn" title="Сбросить фильтры">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18"></path>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Конец блока фильтров -->
+
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Поиск по ГРН, плательщику или собственнику...">
+                </div>
+                <div class="export-buttons">
+                    <button class="btn btn-secondary btn-export-excel" id="exportMainExcel">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <span>Excel</span>
+                    </button>
+                    <button class="btn btn-secondary btn-export-pdf" id="exportMainPdf">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <span>PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>№ Транзакции/поездки</th>
+                            <th>ГРН</th>
+                            <th>Плательщик</th>
+                            <th>Сумма задолженности, ₽</th>
+                            <th>Сумма оплаты</th>
+                            <th>Дата поездки</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                        <!-- Данные будут загружены через JS -->
+                    </tbody>
+                </table>
+                <p id="noResults" class="no-results-message" style="display: none;">Ничего не найдено.</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container" id="paginationContainer">
+                <!-- Элементы пагинации будут добавлены через JS -->
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="judicial-footer">
+            <p>© УВДЗ - Система управления базами данных.</p>
+        </footer>
+    </div>
+
+    <!-- Modal for User Card (3 КОЛОНКИ С РЕАЛЬНЫМИ ПОЛЯМИ) -->
+    <div id="userCardModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Карточка должника: <span id="cardFio"></span></h2>
+                <button id="closeModalBtn" class="btn-icon close-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Колонка 1: Информация о поездке -->
+                <div class="card-column">
+                    <h3>Информация о поездке</h3>
+                    <div class="form-group">
+                        <label for="tripDate">Дата поездки</label>
+                        <input type="datetime-local" id="tripDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="createDate">Дата создания поездки в ЕСВП</label>
+                        <input type="date" id="createDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="transactions">Транзакции</label>
+                        <textarea id="transactions" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="lane">ПВП/РВП - полоса</label>
+                        <input type="text" id="lane">
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Способ оплаты</label>
+                        <input type="text" id="paymentMethod">
+                    </div>
+                    <div class="form-group">
+                        <label for="tariff">Тариф</label>
+                        <div class="input-with-currency">
+                            <input type="text" id="tariff">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="grz">ГРН</label>
+                        <input type="text" id="grz">
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Примечание</label>
+                        <textarea id="note" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Колонка 2: Обработка и информирование -->
+                <div class="card-column">
+                    <h3>Обработка и информирование</h3>
+                    <div class="form-group">
+                        <label for="processor">Обработал</label>
+                        <input type="text" id="processor">
+                    </div>
+                    <div class="form-group">
+                        <label for="processingDate">Дата обработки</label>
+                        <input type="date" id="processingDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Почта</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="text" id="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationType">Тип информирования</label>
+                        <input type="text" id="notificationType">
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationDate">Дата информирования</label>
+                        <input type="date" id="notificationDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="payment">Оплата</label>
+                        <div class="input-with-currency">
+                            <input type="text" id="payment">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentDate">Дата оплаты</label>
+                        <input type="date" id="paymentDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="bank">Банк</label>
+                        <input type="text" id="bank">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Адрес</label>
+                        <textarea id="address" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <!-- Колонка 3: Финансовая информация и данные должника -->
+                <div class="card-column">
+                    <h3>Финансовая информация</h3>
+                    <div class="form-group">
+                        <label for="tripsCount">Кол-во поездок</label>
+                        <input type="number" id="tripsCount">
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentsCount">Кол-во оплат</label>
+                        <input type="number" id="paymentsCount">
+                    </div>
+                    <div class="form-group">
+                        <label for="nonPaymentsCount">Кол-во неоплат</label>
+                        <input type="number" id="nonPaymentsCount">
+                    </div>
+                    <div class="form-group">
+                        <label for="tripsAmount">Сумма поездок</label>
+                        <div class="input-with-currency">
+                            <input type="text" id="tripsAmount">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentsAmount">Сумма оплат</label>
+                        <div class="input-with-currency">
+                            <input type="text" id="paymentsAmount">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="debtAmount">Сумма задолженности</label>
+                        <div class="input-with-currency">
+                            <input type="text" id="debtAmount" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastTripDate">Дата последней поездки</label>
+                        <input type="date" id="lastTripDate">
+                    </div>
+                    
+                    <h3 style="margin-top: 20px;">Данные должника</h3>
+                    <div class="form-group">
+                        <label for="payer">Плательщик</label>
+                        <input type="text" id="payer">
+                    </div>
+                    <div class="form-group">
+                        <label for="owner">Собственник</label>
+                        <input type="text" id="owner">
+                    </div>
+                    <div class="form-group">
+                        <label for="pan">PAN</label>
+                        <input type="text" id="pan">
+                    </div>
+                    <div class="form-group">
+                        <label for="passport">Паспортные данные</label>
+                        <input type="text" id="passport">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate">Дата рождения</label>
+                        <input type="date" id="birthDate">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <div class="footer-block update-details">
+                    <div class="update-info-block" id="updateUserBlock" style="display: none;">
+                        <label>Изменил</label>
+                        <span id="lastUpdateUser">—</span>
+                    </div>
+                    <div class="update-info-block" id="updateDateBlock" style="display: none;">
+                        <label>Дата изменения</label>
+                        <span id="lastUpdateDate">—</span>
+                    </div>
+                </div>
+                <div class="footer-block footer-actions">
+                    <button id="exportCardExcel" class="btn btn-secondary btn-export-excel">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <span>Excel</span>
+                    </button>
+                    <button id="exportCardPdf" class="btn btn-secondary btn-export-pdf">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <span>PDF</span>
+                    </button>
+                    <button id="cancelBtn" class="btn btn-secondary">Отмена</button>
+                    <button id="saveChangesBtn" class="btn btn-primary">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay" style="display: none;">
+        <div class="confirmation-dialog">
+            <div class="confirmation-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <h3 class="confirmation-title">Подтвердите действие</h3>
+            <p class="confirmation-text">Вы уверены, что хотите сохранить изменения?</p>
+            <div class="confirmation-buttons">
+                <button id="cancelSaveBtn" class="btn btn-secondary">Отмена</button>
+                <button id="confirmSaveBtn" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for History -->
+    <div id="historyModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>История изменений</h2>
+                <button id="closeHistoryModalBtn" class="btn-icon close-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="historyModalBody">
+                <div class="history-filters">
+                    <div class="form-group">
+                        <label for="historySearch">Поиск</label>
+                        <input 
+                            type="text" 
+                            id="historySearch" 
+                            placeholder="Универсальный поиск"
+                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="historyStartDate">Начальная дата:</label>
+                        <input type="date" id="historyStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="historyEndDate">Конечная дата:</label>
+                        <input type="date" id="historyEndDate">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Кто изменил</th>
+                                <th>ГРН</th>
+                                <th>Что изменил</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="footer-actions">
+                    <button id="exportHistoryExcel" class="btn btn-secondary btn-export-excel">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <span>Excel</span>
+                    </button>
+                    <button id="exportHistoryPdf" class="btn btn-secondary btn-export-pdf">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <span>PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <script>
+        // ✅ Устанавливаем moduleInfo ДО загрузки страницы
+        sessionStorage.setItem('currentModule', JSON.stringify({
+            name: 'base-zayci',
+            table: 'base_zayci',
+            title: 'База зайцев'
+        }));
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/transition.js"></script>
+    <script src="/js/toast.js"></script>
+    <script src="/js/changeFormatter.js"></script>
+    <script src="/js/page-module-base.js"></script>
+    <script src="/js/base-zayci.js"></script>
+
+</body>
+</html>

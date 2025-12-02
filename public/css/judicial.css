@@ -1,0 +1,1344 @@
+/* ==========================================================================
+   Judicial Page Styles
+   ========================================================================== */
+
+/* Container
+   ========================================================================== */
+.judicial-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--background);
+}
+
+/* Header
+   ========================================================================== */
+.judicial-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    transition: background 0.3s ease;
+    animation: slideInDown 0.6s ease-out;
+}
+
+.header-content {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.judicial-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.back-button:hover {
+    background: var(--surface-light);
+    color: var(--primary);
+    box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.2);
+}
+
+.back-button svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.5;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background: var(--surface-light);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.user-info svg {
+    width: 20px;
+    height: 20px;
+    color: var(--primary);
+}
+
+/* Основной контент */
+/* Main Content
+   ========================================================================== */ .judicial-main {
+    flex: 1;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 40px 30px;
+}
+
+/* Table Controls
+   ========================================================================== */
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    animation: fadeIn 0.5s 0.2s ease-out backwards;
+}
+
+.table-controls h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.search-wrapper {
+    position: relative;
+    flex-grow: 1;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--text-tertiary);
+    pointer-events: none;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 20px 12px 45px;
+    background: var(--surface-light);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+#searchInput:focus {
+    outline: none; /* Убираем стандартный outline */
+    border-color: var(--primary);
+    background: var(--surface-lighter);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.2), inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.export-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Table Styles
+   ========================================================================== */
+.table-container {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px); /* Для Safari */
+    box-shadow: var(--shadow-md);
+    overflow-x: auto;
+    position: relative; /* Необходимо для позиционирования спиннера */
+    animation: fadeIn 0.5s 0.4s ease-out backwards;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.data-table th {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.data-table tbody tr {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--surface-light);
+    transform: translateX(5px) scale(1.005);
+    box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.08);
+}
+
+.data-table tbody tr:hover td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.data-table tbody tr:hover td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+.data-table tbody tr.row-fade-in {
+    animation: rowFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+}
+
+.data-table td {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.data-table .changed-fields {
+    font-size: 12px;
+    white-space: pre-wrap; /* Для переноса строк */
+    line-height: 1.6;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+}
+
+.status.new { background-color: rgba(var(--primary-rgb), 0.1); color: var(--primary-light); }
+.status.in-progress { background-color: rgba(245, 158, 11, 0.1); color: #fcd34d; }
+.status.done { background-color: rgba(16, 185, 129, 0.1); color: #6ee7b7; }
+
+#noResults {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-tertiary);
+    font-size: 16px;
+}
+
+/* Pagination
+   ========================================================================== */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    gap: 8px;
+}
+.pagination-container { animation: fadeIn 0.5s 0.6s ease-out backwards; }
+
+.pagination-btn, .pagination-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.pagination-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.pagination-btn.active {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+    cursor: default;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border);
+    color: var(--text-tertiary);
+}
+
+.pagination-dots {
+    cursor: default;
+    border: none;
+    background: transparent;
+    padding: 0 5px;
+    letter-spacing: 2px;
+}
+
+/* Modal Styles
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001; /* Выше чем шапка */
+    animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root[data-theme="light"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background: var(--background-alt);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 1400px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow);
+    animation: modal-slide-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center center;
+}
+
+@keyframes modalFadeIn { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+}
+
+@keyframes slideInUp { 
+    from { transform: translateY(50px) scale(0.98); opacity: 0; } 
+    to { transform: translateY(0) scale(1); opacity: 1; } 
+}
+
+@keyframes slideInDown { 
+    from { transform: translateY(-20px); opacity: 0; } 
+    to { transform: translateY(0); opacity: 1; } 
+}
+
+@keyframes modal-slide-in {
+    from { 
+        transform: translateY(60px) scale(0.9); 
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0) scale(1); 
+        opacity: 1;
+    }
+}
+
+/* Confirmation Dialog
+   ========================================================================== */
+.confirmation-dialog {
+    background: var(--background-alt);
+    padding: 32px;
+    border-radius: 16px;
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    width: 90%;
+    max-width: 420px;
+    animation: confirmation-slide-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes confirmation-slide-in {
+    from { 
+        transform: translateY(40px) scale(0.95) rotateX(10deg); 
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0) scale(1) rotateX(0); 
+        opacity: 1;
+    }
+}
+
+.confirmation-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to top, rgba(var(--primary-rgb), 0.05), rgba(var(--primary-rgb), 0.15));
+    box-shadow: inset 0 0 10px rgba(var(--primary-rgb), 0.1);
+    margin-bottom: 20px;
+}
+
+.confirmation-icon svg {
+    width: 32px;
+    height: 32px;
+    color: var(--primary);
+}
+
+.confirmation-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.confirmation-text { 
+    color: var(--text-secondary); 
+    margin-bottom: 30px; 
+    line-height: 1.6;
+    max-width: 320px;
+}
+
+.confirmation-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Modal Header, Body, Footer
+   ========================================================================== */
+.modal-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0; /* Предотвращает сжатие хедера */
+}
+
+.modal-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.close-button svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.5;
+}
+
+
+.modal-body {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: grid; /* Используем жесткую сетку для выравнивания */
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+}
+
+#historyModalBody {
+    display: block; /* Переопределяем grid */
+    padding: 20px;
+}
+
+/* Spinner for buttons
+   ========================================================================== */
+.btn-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-top-color: var(--white);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes rowFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Modal Form Styles
+   ========================================================================== */
+.card-column h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--primary-light);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.input-with-currency {
+    position: relative;
+}
+
+.input-with-currency::after {
+    content: '₽';
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-weight: 600;
+    pointer-events: none; /* Чтобы можно было кликать сквозь символ */
+}
+.input-with-currency input:disabled::after { display: none; }
+.input-with-currency input {
+    padding-right: 30px; /* Добавляем отступ справа, чтобы текст не заходил на символ */
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.2);
+}
+
+.form-group input:disabled {
+    background-color: var(--surface);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+}
+
+.form-group textarea {
+    resize: vertical; /* Разрешаем изменять размер только по вертикали */
+}
+
+.form-group input.negative-balance {
+    color: var(--error);
+    font-weight: 600;
+}
+
+.placeholder-text {
+    color: var(--text-tertiary);
+    font-style: italic;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0; /* Предотвращает сжатие футера */
+}
+
+.footer-block {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-block.update-details {
+    justify-content: flex-start;
+}
+
+.update-info-block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface-light);
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+}
+
+.update-info-block label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+.update-info-block span {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.footer-block.export-buttons {
+    justify-content: center;
+}
+
+.update-details {
+    display: flex;
+    gap: 25px;
+}
+
+/* ==========================================================================
+   Unified Button Styles
+   ========================================================================== */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.btn svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    white-space: nowrap;
+}
+.modal-footer .btn,
+.confirmation-buttons .btn {
+    min-width: 140px; /* Устанавливаем минимальную ширину для кнопок */
+    justify-content: center; /* Центрируем контент */
+}
+
+.btn-export-pdf {
+    margin-right: 15px; /* Добавляем отступ, чтобы визуально отделить группы кнопок */
+}
+
+.footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn:disabled,
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-danger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Primary Button (Save, Confirm) */
+.btn-primary {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+/* Hover effects for buttons with smooth transitions */
+.btn-primary:hover:not(:disabled),
+.btn-secondary:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    box-shadow: 0 12px 24px rgba(var(--primary-rgb), 0.25);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.15);
+}
+
+/* Special hover for export buttons with enhanced animations */
+.btn-export-excel:hover:not(:disabled) {
+    background-color: #107c41; /* Green */
+    border-color: #107c41;
+    color: var(--white);
+    box-shadow: 0 10px 20px rgba(16, 124, 65, 0.3);
+    transform: translateY(-3px) scale(1.03);
+}
+
+.btn-export-pdf:hover:not(:disabled) {
+    background-color: #d32f2f; /* Red */
+    border-color: #d32f2f;
+    color: var(--white);
+    box-shadow: 0 10px 20px rgba(211, 47, 47, 0.3);
+    transform: translateY(-3px) scale(1.03);
+}
+
+/* Secondary Button (Cancel, History, Export) */
+.btn-secondary {
+    background: var(--surface-light);
+    color: var(--text-secondary);
+    border-color: var(--border);
+}
+
+/* Danger Button (e.g., Delete) */
+.btn-danger {
+    background-color: var(--error);
+    color: var(--white);
+    border-color: var(--error);
+}
+.btn-danger:hover:not(:disabled) {
+    background-color: #c02626; /* Darker error color */
+    border-color: #c02626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Icon-only Button (Close, Back) */
+.btn-icon {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    color: var(--text-tertiary);
+    border-radius: 50%;
+}
+.btn-icon:hover:not(:disabled) {
+    background: var(--surface-light);
+    color: var(--text-primary);
+    transform: scale(1.1) rotate(90deg);
+}
+.back-button:hover { /* Override for back button */
+    transform: scale(1.1) rotate(0);
+}
+
+/* Footer
+   ========================================================================== */
+.judicial-footer {
+    padding: 25px;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 12px;
+}
+
+/* Переопределение стилей для кнопки темы на этой странице */
+.theme-toggle {
+    position: relative; /* Убираем fixed позиционирование */
+    top: auto;
+    right: auto;
+    width: 44px;
+    height: 44px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.1);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    border-color: var(--primary);
+}
+
+/* ДОБАВЬ ЭТИ СТИЛИ ПЕРЕД @media (max-width: 1024px) */
+
+/* ==========================================================================
+   Toolbar Styles (NEW)
+   ========================================================================== */
+.toolbar {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.5s ease-out backwards;
+}
+
+.toolbar-left h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 5px 0;
+}
+
+.page-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    opacity: 0.8;
+}
+
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Кнопка загрузки Excel */
+#uploadExcelBtn {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+#uploadExcelBtn:hover:not(:disabled) {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    box-shadow: 0 12px 24px rgba(var(--primary-rgb), 0.25);
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* Кнопка скачать шаблон */
+#downloadTemplateBtn {
+    background: var(--surface-light);
+    color: var(--text-secondary);
+    border-color: var(--border);
+}
+
+#downloadTemplateBtn:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.15);
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* Скрытый input для загрузки файлов */
+#excelFileInput {
+    display: none;
+}
+
+/* Responsive для Toolbar */
+@media (max-width: 1024px) {
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .toolbar-left h2 {
+        font-size: 20px;
+    }
+    
+    .toolbar-right {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .toolbar-right .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .toolbar {
+        padding: 15px;
+    }
+    
+    .toolbar-left h2 {
+        font-size: 18px;
+    }
+    
+    .page-subtitle {
+        font-size: 12px;
+    }
+}
+
+/* ==========================================================================
+   Responsive Design - Mobile & Tablet
+   ========================================================================== */
+
+/* Tablet and below (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .judicial-main {
+        padding: 30px 20px;
+    }
+    
+    .header-content {
+        padding: 0 20px;
+    }
+    
+    .table-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .search-wrapper {
+        width: 100%;
+    }
+    
+    .export-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        width: 95%;
+        height: 95vh;
+    }
+    
+    .modal-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .confirmation-dialog {
+        max-width: 90%;
+    }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    .judicial-header h1 {
+        font-size: 20px;
+    }
+    
+    .table-controls h2 {
+        font-size: 22px;
+    }
+    
+    .header-actions {
+        gap: 10px;
+    }
+    
+    /* Visually hide username but keep it accessible to screen readers on mobile */
+    .user-info span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        font-size: 13px;
+    }
+    
+    /* Visually hide button text labels on mobile, keeping icons visible and text accessible */
+    .btn:not(.btn-icon) span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+    
+    .btn svg {
+        margin: 0;
+    }
+    
+    .export-buttons .btn {
+        flex: 1;
+    }
+    
+    /* Make table scrollable horizontally on mobile */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table {
+        min-width: 800px;
+    }
+    
+    /* Modal adjustments */
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 18px;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+    
+    .footer-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .footer-actions .btn {
+        width: 100%;
+    }
+    
+    .update-details {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .confirmation-buttons {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+/* Small mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .judicial-main {
+        padding: 20px 15px;
+    }
+    
+    .header-content {
+        padding: 0 15px;
+    }
+    
+    .judicial-header h1 {
+        font-size: 18px;
+    }
+    
+    .table-controls h2 {
+        font-size: 20px;
+    }
+    
+    .logo-section {
+        gap: 10px;
+    }
+    
+    .modal-content {
+        border-radius: 15px;
+        width: 100%;
+        height: 100vh;
+    }
+    
+    .card-column h3 {
+        font-size: 16px;
+    }
+    
+    .pagination-container {
+        gap: 5px;
+    }
+    
+    .pagination-btn {
+        min-width: 35px;
+        height: 35px;
+        font-size: 13px;
+    }
+}
+
+/* ==========================================================================
+   Accessibility Improvements
+   ========================================================================== */
+
+/* Screen reader only class - hides visually but keeps accessible to screen readers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Enhanced focus indicators for keyboard navigation */
+*:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Ensure buttons and interactive elements have clear focus states */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* For light theme, use a darker outline for better visibility */
+:root[data-theme="light"] *:focus-visible,
+:root[data-theme="light"] button:focus-visible,
+:root[data-theme="light"] a:focus-visible,
+:root[data-theme="light"] input:focus-visible,
+:root[data-theme="light"] textarea:focus-visible,
+:root[data-theme="light"] select:focus-visible {
+    outline-color: var(--primary-dark);
+}
+
+/* Skip to main content link for screen readers */
+.skip-to-main {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 0 0 8px 0;
+    z-index: 10000;
+    transition: top 0.3s ease;
+}
+
+.skip-to-main:focus {
+    top: 0;
+}
+
+/* Improve text readability */
+p, li, td, th, label {
+    line-height: 1.6;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --border: rgba(0, 0, 0, 0.3);
+        --text-primary: #000000;
+        --text-secondary: #1a1a1a;
+    }
+    
+    :root[data-theme="light"] {
+        --border: rgba(0, 0, 0, 0.4);
+        --text-primary: #000000;
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ==========================================================================
+   Date Filters Styles
+   ========================================================================== */
+
+.filters-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: auto; /* Сдвигает поиск вправо */
+    margin-left: 20px;
+}
+
+.date-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    padding: 5px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    transition: var(--transition);
+}
+
+.date-filter-group:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-wrapper svg {
+    position: absolute;
+    left: 10px;
+    width: 16px;
+    height: 16px;
+    color: var(--text-tertiary);
+    pointer-events: none;
+}
+
+.input-icon-wrapper input {
+    border: none;
+    background: transparent;
+    padding: 8px 10px 8px 32px;
+    font-size: 13px;
+    color: var(--text-primary);
+    width: 130px;
+    outline: none;
+    font-family: inherit;
+}
+
+/* Стили для календаря внутри инпута */
+.input-icon-wrapper input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.filter-separator {
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+
+.btn-icon-only {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    margin-left: 5px;
+}
+
+.btn-icon-only:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+}
+
+.btn-icon-only svg {
+    width: 16px;
+    height: 16px;
+}
+
+@media (max-width: 1024px) {
+    .table-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .filters-wrapper {
+        margin-left: 0;
+        margin-right: 0;
+        order: 2;
+    }
+    
+    .date-filter-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .input-icon-wrapper input {
+        width: 100%;
+    }
+    
+    .search-wrapper {
+        order: 1;
+    }
+    
+    .export-buttons {
+        order: 3;
+    }
+}

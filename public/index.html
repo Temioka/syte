@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
+    <title>Работа с базами данных УВДЗ</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Animated background elements -->
+        <div class="background-animation">
+            <div class="bg-element element-1"></div>
+            <div class="bg-element element-2"></div>
+            <div class="bg-element element-3"></div>
+        </div>
+
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle" id="themeToggle" title="Переключить тему">
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+
+        <div class="auth-wrapper" id="authWrapper">
+            <!-- ✅ Форма Логина (ПОКАЗЫВАЕТСЯ ПО УМОЛЧАНИЮ) -->
+            <div class="auth-card login-card" id="loginCard">
+                <div class="auth-header">
+                    <div class="logo-container">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h1>Управление БД</h1>
+                    <p>УВДЗ - Система работы с базами данных</p>
+                </div>
+
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginUsername">Имя пользователя</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input 
+                                type="text" 
+                                id="loginUsername" 
+                                placeholder="Введите имя пользователя"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input 
+                                type="password" 
+                                id="loginPassword" 
+                                placeholder="Введите пароль"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span>Войти в систему</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>                        
+                    </button>
+
+                    <div id="loginMessage" class="message"></div>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Для получения доступа обратитесь к администратору системы</p>
+                </div>
+            </div>
+
+            <!-- ❌ Форма Регистрации (СКРЫТА ПО УМОЛЧАНИЮ) -->
+            <div class="auth-card register-card" id="registerCard" style="display: none;">
+                <div class="auth-header">
+                    <div class="logo-container">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h1>Создать аккаунт</h1>
+                    <p>Регистрация в системе управления БД</p>
+                </div>
+
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerUsername">Имя пользователя</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input 
+                                type="text" 
+                                id="registerUsername" 
+                                placeholder="Выберите имя пользователя (минимум 3 символа)"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Электронная почта</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <input 
+                                type="email" 
+                                id="registerEmail" 
+                                placeholder="Введите корпоративный email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Пароль</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input 
+                                type="password" 
+                                id="registerPassword" 
+                                placeholder="Минимум 8 символов"
+                                required
+                            >
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar">
+                                <div class="strength-fill"></div>
+                            </div>
+                            <div class="strength-checks">
+                                <div class="check-item" id="checkLength">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Минимум 8 символов</span>
+                                </div>
+                                <div class="check-item" id="checkUpperCase">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Прописные буквы (A-Z)</span>
+                                </div>
+                                <div class="check-item" id="checkLowerCase">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Строчные буквы (a-z)</span>
+                                </div>
+                                <div class="check-item" id="checkNumbers">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Цифры (0-9)</span>
+                                </div>
+                                <div class="check-item" id="checkSpecial">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Спецсимволы (!@#$%^&*)</span>
+                                </div>
+                            </div>
+                            <div class="strength-text" id="strengthText">Слабый пароль</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Подтверждение пароля</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input 
+                                type="password" 
+                                id="registerConfirmPassword" 
+                                placeholder="Повторите пароль"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span>Зарегистрироваться</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="13 17 20 10 13 3"></polyline>
+                            <polyline points="20 10 0 10"></polyline>
+                        </svg>
+                    </button>
+
+                    <div id="registerMessage" class="message"></div>
+                </form>
+
+                <div class="auth-footer">
+                    <button type="button" class="link-btn" id="backToLoginBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Вернуться к входу</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Debug Info (можно удалить в продакшене) -->
+    <div id="debugInfo" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 11px;
+        color: var(--text-tertiary);
+        font-family: monospace;
+        max-width: 250px;
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        display: none;
+    ">
+        <div><strong>🔗 Хост:</strong> <span id="debugHost">-</span></div>
+        <div><strong>📍 IP:</strong> <span id="debugIP">-</span></div>
+        <div><strong>🔌 Порт:</strong> <span id="debugPort">-</span></div>
+    </div>
+
+    <script>
+        // Debug info (включается Ctrl+Shift+D)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                const debug = document.getElementById('debugInfo');
+                debug.style.display = debug.style.display === 'none' ? 'block' : 'none';
+                document.getElementById('debugHost').textContent = window.location.host;
+                document.getElementById('debugIP').textContent = window.location.hostname;
+                document.getElementById('debugPort').textContent = window.location.port || '80';
+            }
+        });
+    </script>
+
+    <script src="/js/theme.js"></script>
+    <script src="/js/transition.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/config.js"></script>
+</body>
+</html>
