@@ -12,11 +12,11 @@
     --accent: #a855f7;
     --accent-light: #c084fc;
     
-    --background: #09090b;
-    --background-alt: #0f0f1e;
-    --surface: rgba(9, 9, 11, 0.7);
-    --surface-light: rgba(20, 15, 40, 0.5);
-    --surface-lighter: rgba(40, 30, 80, 0.2);
+    --background: #0a0a0f;
+    --background-alt: #111118;
+    --surface: rgba(17, 17, 24, 0.7);
+    --surface-light: rgba(17, 17, 24, 0.5);
+    --surface-lighter: rgba(17, 17, 24, 0.2);
     
     --text-primary: #ffffff;
     --text-secondary: #d1d5db;
@@ -43,11 +43,11 @@
     --accent-light: #60a5fa;
     --primary-rgb: 37, 99, 235;
     
-    --background: #f8fafc;
-    --background-alt: #f1f5f9;
-    --surface: rgba(248, 250, 252, 0.5);
-    --surface-light: rgba(241, 245, 249, 0.6);
-    --surface-lighter: rgba(226, 232, 240, 0.7);
+    --background: #ffffff;
+    --background-alt: #f9fafb;
+    --surface: rgba(255, 255, 255, 0.95);
+    --surface-light: rgba(249, 250, 251, 0.9);
+    --surface-lighter: rgba(241, 245, 249, 0.8);
     
     --text-primary: #0f172a;
     --text-secondary: #1e293b;
