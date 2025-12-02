@@ -14,9 +14,9 @@
     --accent-light: #c084fc;
     --primary-rgb: 139, 92, 246;
     
-    /* Фоны - глубокие темные оттенки */
-    --background: #000000;
-    --background-alt: #0a0a0f;
+    /* Фоны - глубокие темные оттенки (с учетом доступности) */
+    --background: #0a0a0f;
+    --background-alt: #111118;
     --surface: rgba(17, 17, 24, 0.7);
     --surface-light: rgba(17, 17, 24, 0.5);
     --surface-lighter: rgba(17, 17, 24, 0.2);
@@ -839,7 +839,7 @@ body.page-exit .container {
     left: 100%;
 }
 
-/* Ripple effect on click */
+/* Ripple effect on click - scales based on button size */
 .btn::after {
     content: '';
     position: absolute;
@@ -855,8 +855,8 @@ body.page-exit .container {
 }
 
 .btn:active::after {
-    width: 300px;
-    height: 300px;
+    width: 200%;
+    height: 200%;
     opacity: 0.3;
     transition: width 0s, height 0s, opacity 0s;
 }
